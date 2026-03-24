@@ -1,0 +1,24 @@
+PODS:
+  - SwiftSystemService (0.1.0):
+    - SwiftSystemService/Device (= 0.1.0)
+    - SwiftSystemService/Network (= 0.1.0)
+    - SwiftSystemService/Storage (= 0.1.0)
+    - SwiftSystemService/Time (= 0.1.0)
+  - SwiftSystemService/Device (0.1.0)
+  - SwiftSystemService/Network (0.1.0)
+  - SwiftSystemService/Storage (0.1.0)
+  - SwiftSystemService/Time (0.1.0)
+
+DEPENDENCIES:
+  - SwiftSystemService (from `../`)
+
+EXTERNAL SOURCES:
+  SwiftSystemService:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SwiftSystemService: 954d00709924433bcc8b5e670d022cdddf36437d
+
+PODFILE CHECKSUM: 895aa17a8bb63571f5493fd3d9372d5b83cb1048
+
+COCOAPODS: 1.16.2

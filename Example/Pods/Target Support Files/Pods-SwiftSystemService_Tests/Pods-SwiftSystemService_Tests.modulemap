@@ -1,0 +1,6 @@
+framework module Pods_SwiftSystemService_Tests {
+  umbrella header "Pods-SwiftSystemService_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
