@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import SwiftSystemService
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        print(SystemService.getDeviceInfo(uuid: "85242112121212"))
     }
 
     override func didReceiveMemoryWarning() {

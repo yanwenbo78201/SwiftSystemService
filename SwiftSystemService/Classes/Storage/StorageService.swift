@@ -58,7 +58,7 @@ public class StorageService: NSObject {
     public func cashTotal() -> String {
         if let diskAttributes = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()),
            let totalDiskSize = diskAttributes[.systemSize] as? Int, totalDiskSize > 0 {
-            let transGNum = totalDiskSize / (1024 * 1024 * 1024)
+            let transGNum = Double(totalDiskSize) / (1024.0 * 1024.0 * 1024.0)
             return String(format: "%.6f", transGNum)
         }
         return "-1"
@@ -67,7 +67,7 @@ public class StorageService: NSObject {
     public func cashCanUse() -> String {
         if let diskAttributes = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()),
            let freeDiskSize = diskAttributes[.systemFreeSize] as? Int, freeDiskSize > 0 {
-            let transGNum = freeDiskSize / (1024 * 1024 * 1024)
+            let transGNum = Double(freeDiskSize) / (1024.0 * 1024.0 * 1024.0)
             return String(format: "%.6f", transGNum)
         }
         return "-1"
