@@ -1,13 +1,15 @@
 PODS:
-  - SwiftSystemService (0.1.0):
-    - SwiftSystemService/Device (= 0.1.0)
-    - SwiftSystemService/Network (= 0.1.0)
-    - SwiftSystemService/Storage (= 0.1.0)
-    - SwiftSystemService/Time (= 0.1.0)
-  - SwiftSystemService/Device (0.1.0)
-  - SwiftSystemService/Network (0.1.0)
-  - SwiftSystemService/Storage (0.1.0)
-  - SwiftSystemService/Time (0.1.0)
+  - SwiftSystemService (0.1.1):
+    - SwiftSystemService/Broken (= 0.1.1)
+    - SwiftSystemService/Device (= 0.1.1)
+    - SwiftSystemService/Network (= 0.1.1)
+    - SwiftSystemService/Storage (= 0.1.1)
+    - SwiftSystemService/Time (= 0.1.1)
+  - SwiftSystemService/Broken (0.1.1)
+  - SwiftSystemService/Device (0.1.1)
+  - SwiftSystemService/Network (0.1.1)
+  - SwiftSystemService/Storage (0.1.1)
+  - SwiftSystemService/Time (0.1.1)
 
 DEPENDENCIES:
   - SwiftSystemService (from `../`)
@@ -17,7 +19,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SwiftSystemService: 954d00709924433bcc8b5e670d022cdddf36437d
+  SwiftSystemService: 180fdc6d2245e3672c80f4a45fa0161a977ff425
 
 PODFILE CHECKSUM: 895aa17a8bb63571f5493fd3d9372d5b83cb1048
 

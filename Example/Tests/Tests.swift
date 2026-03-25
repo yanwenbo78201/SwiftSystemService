@@ -1,5 +1,4 @@
 import XCTest
-import SwiftSystemService
 
 class Tests: XCTestCase {
     

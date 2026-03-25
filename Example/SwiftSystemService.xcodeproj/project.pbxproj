@@ -29,7 +29,7 @@
 
 /* Begin PBXFileReference section */
 		3E74C3F610B44D6C3C9CA9E2 /* Pods-SwiftSystemService_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSystemService_Tests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSystemService_Tests/Pods-SwiftSystemService_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		5B82C6C9BDEF6AB456FEC4D9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		5B82C6C9BDEF6AB456FEC4D9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* SwiftSystemService_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftSystemService_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,12 +41,12 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6102EFA94849F2775B7ABB78 /* Pods_SwiftSystemService_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSystemService_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7956C0333D010A0FC4592589 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		7956C0333D010A0FC4592589 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		7B3D5BC80C763320E447B29C /* Pods-SwiftSystemService_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSystemService_Example.release.xcconfig"; path = "Target Support Files/Pods-SwiftSystemService_Example/Pods-SwiftSystemService_Example.release.xcconfig"; sourceTree = "<group>"; };
 		A6380CA1E54294D98515FC3B /* Pods_SwiftSystemService_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSystemService_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347D736B669BAE12D35E3C6 /* Pods-SwiftSystemService_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSystemService_Example.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSystemService_Example/Pods-SwiftSystemService_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		EFDD099AF9C8791A1A445C8E /* Pods-SwiftSystemService_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSystemService_Tests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSystemService_Tests/Pods-SwiftSystemService_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		F4FF0C9FA3A0DC3DE359D4BF /* SwiftSystemService.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = SwiftSystemService.podspec; path = ../SwiftSystemService.podspec; sourceTree = "<group>"; };
+		F4FF0C9FA3A0DC3DE359D4BF /* SwiftSystemService.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SwiftSystemService.podspec; path = ../SwiftSystemService.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,7 +147,6 @@
 				3E74C3F610B44D6C3C9CA9E2 /* Pods-SwiftSystemService_Tests.debug.xcconfig */,
 				EFDD099AF9C8791A1A445C8E /* Pods-SwiftSystemService_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -227,6 +226,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);

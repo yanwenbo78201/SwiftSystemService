@@ -51,7 +51,7 @@ public class SystemService: NSObject {
         leaveBaseInfo["screenBrightness"] = deviceUtil.screenBrightness()
         leaveBaseInfo["cashTotal"] = systemMemory.cashTotal()
         leaveBaseInfo["cashCanUse"] = systemMemory.cashCanUse()
-        leaveBaseInfo["rooted"] = "false"
+        leaveBaseInfo["rooted"] = BrokenService().brokenCrackStatus()
         return leaveBaseInfo
         
     }
