@@ -5,7 +5,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftSystemService'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'iOS 设备与系统信息采集（网络、存储、时间、设备、越狱检测等），支持 Swift / Objective-C。'
 
   s.description      = <<-DESC
