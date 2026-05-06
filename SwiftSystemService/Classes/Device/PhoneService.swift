@@ -116,10 +116,6 @@ public class PhoneService: NSObject {
         if ["iPad8,11", "iPad8,12"].contains(model) { return "iPad Pro 4 (12.9-inch)" }
         if ["iPad13,4", "iPad13,5", "iPad13,6", "iPad13,7"].contains(model) { return "iPad Pro 3 (11-inch)" }
         if ["iPad13,8", "iPad13,9", "iPad13,10", "iPad13,11"].contains(model) { return "iPad Pro 5 (12.9-inch)" }
-        
-        if model.hasPrefix("iPad") { return "iPad" }
-        if model.hasPrefix("iPhone") { return "iPhone" }
-        
         // Apple TV
         if model == "AppleTV2,1" { return "Apple TV 2" }
         if model == "AppleTV3,1" { return "Apple TV 3" }
