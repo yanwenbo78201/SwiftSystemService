@@ -57,70 +57,220 @@ public class PhoneService: NSObject {
         
         // iPhone系列
         let iphoneModels: [String: String] = [
-            "iPhone5,1": "iPhone 5", "iPhone5,2": "iPhone 5",
-            "iPhone5,3": "iPhone 5c", "iPhone5,4": "iPhone 5c",
-            "iPhone6,1": "iPhone 5s", "iPhone6,2": "iPhone 5s",
-            "iPhone7,1": "iPhone 6 Plus", "iPhone7,2": "iPhone 6",
-            "iPhone8,1": "iPhone 6s", "iPhone8,2": "iPhone 6s Plus", "iPhone8,4": "iPhone SE",
-            "iPhone9,1": "iPhone 7", "iPhone9,2": "iPhone 7 Plus", "iPhone9,4": "iPhone 7 Plus",
-            "iPhone10,1": "iPhone 8", "iPhone10,4": "iPhone 8",
-            "iPhone10,2": "iPhone 8 Plus", "iPhone10,5": "iPhone 8 Plus",
-            "iPhone10,3": "iPhone X", "iPhone10,6": "iPhone X",
-            "iPhone11,8": "iPhone XR", "iPhone11,2": "iPhone XS", "iPhone11,6": "iPhone XS Max",
-            "iPhone12,1": "iPhone 11", "iPhone12,3": "iPhone 11 Pro", "iPhone12,5": "iPhone 11 Pro Max", "iPhone12,8": "iPhone SE 2",
-            "iPhone13,1": "iPhone 12 mini", "iPhone13,2": "iPhone 12", "iPhone13,3": "iPhone 12 Pro", "iPhone13,4": "iPhone 12 Pro Max",
-            "iPhone14,4": "iPhone 13 mini", "iPhone14,5": "iPhone 13", "iPhone14,2": "iPhone 13 Pro", "iPhone14,3": "iPhone 13 Pro Max", "iPhone14,6": "iPhone SE 3",
-            "iPhone14,7": "iPhone 14", "iPhone14,8": "iPhone 14 Plus",
-            "iPhone15,2": "iPhone 14 Pro", "iPhone15,3": "iPhone 14 Pro Max",
-            "iPhone15,4": "iPhone 15", "iPhone15,5": "iPhone 15 Plus",
-            "iPhone16,1": "iPhone 15 Pro", "iPhone16,2": "iPhone 15 Pro Max",
-            "iPhone17,3": "iPhone 16", "iPhone17,4": "iPhone 16 Plus",
-            "iPhone17,1": "iPhone 16 Pro", "iPhone17,2": "iPhone 16 Pro Max","iPhone17,5": "iPhone 16e",
-            "iPhone18,1": "iPhone 17 Pro", "iPhone18,2": "iPhone 17 Pro Max",
-            "iPhone18,3": "iPhone 17", "iPhone18,4": "iPhone Air","iPhone18,5":"iPhone 17e"
+            "iPhone1,1": "iPhone",
+            "iPhone1,2": "iPhone 3G",
+            "iPhone2,1": "iPhone 3GS",
+            "iPhone3,1": "iPhone 4",
+            "iPhone3,2": "iPhone 4",
+            "iPhone3,3": "iPhone 4",
+            "iPhone4,1": "iPhone 4S",
+            "iPhone5,1": "iPhone 5",
+            "iPhone5,2": "iPhone 5",
+            "iPhone5,3": "iPhone 5c",
+            "iPhone5,4": "iPhone 5c",
+            "iPhone6,1": "iPhone 5s",
+            "iPhone6,2": "iPhone 5s",
+            "iPhone7,1": "iPhone 6 Plus",
+            "iPhone7,2": "iPhone 6",
+            "iPhone8,1": "iPhone 6s",
+            "iPhone8,2": "iPhone 6s Plus",
+            "iPhone8,4": "iPhone SE (1st generation)",
+            "iPhone9,1": "iPhone 7",
+            "iPhone9,2": "iPhone 7 Plus",
+            "iPhone9,3": "iPhone 7",
+            "iPhone9,4": "iPhone 7 Plus",
+            "iPhone10,1": "iPhone 8",
+            "iPhone10,2": "iPhone 8 Plus",
+            "iPhone10,3": "iPhone X",
+            "iPhone10,4": "iPhone 8",
+            "iPhone10,5": "iPhone 8 Plus",
+            "iPhone10,6": "iPhone X",
+            "iPhone11,2": "iPhone XS",
+            "iPhone11,4": "iPhone XS Max",
+            "iPhone11,6": "iPhone XS Max",
+            "iPhone11,8": "iPhone XR",
+            "iPhone12,1": "iPhone 11",
+            "iPhone12,3": "iPhone 11 Pro",
+            "iPhone12,5": "iPhone 11 Pro Max",
+            "iPhone12,8": "iPhone SE (2nd generation)",
+            "iPhone13,1": "iPhone 12 mini",
+            "iPhone13,2": "iPhone 12",
+            "iPhone13,3": "iPhone 12 Pro",
+            "iPhone13,4": "iPhone 12 Pro Max",
+            "iPhone14,2": "iPhone 13 Pro",
+            "iPhone14,3": "iPhone 13 Pro Max",
+            "iPhone14,4": "iPhone 13 mini",
+            "iPhone14,5": "iPhone 13",
+            "iPhone14,6": "iPhone SE (3rd generation)",
+            "iPhone14,7": "iPhone 14",
+            "iPhone14,8": "iPhone 14 Plus",
+            "iPhone15,2": "iPhone 14 Pro",
+            "iPhone15,3": "iPhone 14 Pro Max",
+            "iPhone15,4": "iPhone 15",
+            "iPhone15,5": "iPhone 15 Plus",
+            "iPhone16,1": "iPhone 15 Pro",
+            "iPhone16,2": "iPhone 15 Pro Max",
+            "iPhone17,1": "iPhone 16 Pro",
+            "iPhone17,2": "iPhone 16 Pro Max",
+            "iPhone17,3": "iPhone 16",
+            "iPhone17,4": "iPhone 16 Plus",
+            "iPhone17,5": "iPhone 16e",
+            "iPhone18,1": "iPhone 17 Pro",
+            "iPhone18,2": "iPhone 17 Pro Max",
+            "iPhone18,3": "iPhone 17",
+            "iPhone18,4": "iPhone Air",
+            "iPhone18,5": "iPhone 17e",
 
         ]
         
         if let iPhoneName = iphoneModels[model] {
             return iPhoneName
         }
+        // iPad系列
+        let ipadModels: [String: String] = [
+            "iPad1,1": "iPad",
+            "iPad2,1": "iPad 2",
+            "iPad2,2": "iPad 2",
+            "iPad2,3": "iPad 2",
+            "iPad2,4": "iPad 2",
+            "iPad2,5": "iPad mini",
+            "iPad2,6": "iPad mini",
+            "iPad2,7": "iPad mini",
+            "iPad3,1": "iPad (3rd generation)",
+            "iPad3,2": "iPad (3rd generation)",
+            "iPad3,3": "iPad (3rd generation)",
+            "iPad3,4": "iPad (4th generation)",
+            "iPad3,5": "iPad (4th generation)",
+            "iPad3,6": "iPad (4th generation)",
+            "iPad4,1": "iPad Air",
+            "iPad4,2": "iPad Air",
+            "iPad4,3": "iPad Air",
+            "iPad4,4": "iPad mini 2",
+            "iPad4,5": "iPad mini 2",
+            "iPad4,6": "iPad mini 2",
+            "iPad4,7": "iPad mini 3",
+            "iPad4,8": "iPad mini 3",
+            "iPad4,9": "iPad mini 3",
+            "iPad5,1": "iPad mini 4",
+            "iPad5,2": "iPad mini 4",
+            "iPad5,3": "iPad Air 2",
+            "iPad5,4": "iPad Air 2",
+            "iPad6,3": "iPad Pro (9.7-inch)",
+            "iPad6,4": "iPad Pro (9.7-inch)",
+            "iPad6,7": "iPad Pro (12.9-inch)",
+            "iPad6,8": "iPad Pro (12.9-inch)",
+            "iPad6,11": "iPad (5th generation)",
+            "iPad6,12": "iPad (5th generation)",
+            "iPad7,1": "iPad Pro (12.9-inch) (2nd generation)",
+            "iPad7,2": "iPad Pro (12.9-inch) (2nd generation)",
+            "iPad7,3": "iPad Pro (10.5-inch)",
+            "iPad7,4": "iPad Pro (10.5-inch)",
+            "iPad7,5": "iPad (6th generation)",
+            "iPad7,6": "iPad (6th generation)",
+            "iPad7,11": "iPad (7th generation)",
+            "iPad7,12": "iPad (7th generation)",
+            "iPad8,1": "iPad Pro (11-inch)",
+            "iPad8,2": "iPad Pro (11-inch)",
+            "iPad8,3": "iPad Pro (11-inch)",
+            "iPad8,4": "iPad Pro (11-inch)",
+            "iPad8,5": "iPad Pro (12.9-inch) (3rd generation)",
+            "iPad8,6": "iPad Pro (12.9-inch) (3rd generation)",
+            "iPad8,7": "iPad Pro (12.9-inch) (3rd generation)",
+            "iPad8,8": "iPad Pro (12.9-inch) (3rd generation)",
+            "iPad8,9": "iPad Pro (11-inch) (2nd generation)",
+            "iPad8,10": "iPad Pro (11-inch) (2nd generation)",
+            "iPad8,11": "iPad Pro (12.9-inch) (4th generation)",
+            "iPad8,12": "iPad Pro (12.9-inch) (4th generation)",
+            "iPad11,1": "iPad mini (5th generation)",
+            "iPad11,2": "iPad mini (5th generation)",
+            "iPad11,3": "iPad Air (3rd generation)",
+            "iPad11,4": "iPad Air (3rd generation)",
+            "iPad11,6": "iPad (8th generation)",
+            "iPad11,7": "iPad (8th generation)",
+            "iPad12,1": "iPad (9th generation)",
+            "iPad12,2": "iPad (9th generation)",
+            "iPad13,1": "iPad Air (4th generation)",
+            "iPad13,2": "iPad Air (4th generation)",
+            "iPad13,4": "iPad Pro (11-inch) (3rd generation)",
+            "iPad13,5": "iPad Pro (11-inch) (3rd generation)",
+            "iPad13,6": "iPad Pro (11-inch) (3rd generation)",
+            "iPad13,7": "iPad Pro (11-inch) (3rd generation)",
+            "iPad13,8": "iPad Pro (12.9-inch) (5th generation)",
+            "iPad13,9": "iPad Pro (12.9-inch) (5th generation)",
+            "iPad13,10": "iPad Pro (12.9-inch) (5th generation)",
+            "iPad13,11": "iPad Pro (12.9-inch) (5th generation)",
+            "iPad13,16": "iPad Air (5th generation)",
+            "iPad13,17": "iPad Air (5th generation)",
+            "iPad13,18": "iPad (10th generation)",
+            "iPad13,19": "iPad (10th generation)",
+            "iPad14,1": "iPad mini (6th generation)",
+            "iPad14,2": "iPad mini (6th generation)",
+            "iPad14,3": "iPad Pro (11-inch) (4th generation)",
+            "iPad14,4": "iPad Pro (11-inch) (4th generation)",
+            "iPad14,5": "iPad Pro (12.9-inch) (6th generation)",
+            "iPad14,6": "iPad Pro (12.9-inch) (6th generation)",
+            "iPad14,8": "iPad Air 11-inch (M2)",
+            "iPad14,9": "iPad Air 11-inch (M2)",
+            "iPad14,10": "iPad Air 13-inch (M2)",
+            "iPad14,11": "iPad Air 13-inch (M2)",
+            "iPad15,3": "iPad Air 11-inch (M3)",
+            "iPad15,4": "iPad Air 11-inch (M3)",
+            "iPad15,5": "iPad Air 13-inch (M3)",
+            "iPad15,6": "iPad Air 13-inch (M3)",
+            "iPad15,7": "iPad (A16)",
+            "iPad15,8": "iPad (A16)",
+            "iPad16,1": "iPad mini (A17 Pro)",
+            "iPad16,2": "iPad mini (A17 Pro)",
+            "iPad16,3": "iPad Pro 11-inch (M4)",
+            "iPad16,4": "iPad Pro 11-inch (M4)",
+            "iPad16,5": "iPad Pro 13-inch (M4)",
+            "iPad16,6": "iPad Pro 13-inch (M4)",
+            "iPad16,8": "iPad Air 11-inch (M4)",
+            "iPad16,9": "iPad Air 11-inch (M4)",
+            "iPad16,10": "iPad Air 13-inch (M4)",
+            "iPad16,11": "iPad Air 13-inch (M4)",
+            "iPad17,1": "iPad Pro 11-inch (M5)",
+            "iPad17,2": "iPad Pro 11-inch (M5)",
+            "iPad17,3": "iPad Pro 13-inch (M5)",
+            "iPad17,4": "iPad Pro 13-inch (M5)",
+        ]
+
+        if let ipadName = ipadModels[model] {
+            return ipadName
+        }
+        
+        // iPod系列
+        let ipodModels: [String: String] = [
+            "iPod1,1": "iPod touch",
+            "iPod2,1": "iPod touch (2nd generation)",
+            "iPod3,1": "iPod touch (3rd generation)",
+            "iPod4,1": "iPod touch (4th generation)",
+            "iPod5,1": "iPod touch (5th generation)",
+            "iPod7,1": "iPod touch (6th generation)",
+            "iPod9,1": "iPod touch (7th generation)",
+        ]
         
         // iPad系列
-        if model == "iPad1,1" { return "iPad" }
-        if ["iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4"].contains(model) { return "iPad 2" }
-        if ["iPad2,5", "iPad2,6", "iPad2,7"].contains(model) { return "iPad mini" }
-        if ["iPad3,1", "iPad3,2", "iPad3,3"].contains(model) { return "iPad 3" }
-        if ["iPad3,4", "iPad3,5", "iPad3,6"].contains(model) { return "iPad 4" }
-        if ["iPad4,1", "iPad4,2", "iPad4,3"].contains(model) { return "iPad Air" }
-        if ["iPad4,4", "iPad4,5", "iPad4,6"].contains(model) { return "iPad mini 2" }
-        if ["iPad4,7", "iPad4,8", "iPad4,9"].contains(model) { return "iPad mini 3" }
-        if ["iPad5,1", "iPad5,2"].contains(model) { return "iPad mini 4" }
-        if ["iPad11,1", "iPad11,2"].contains(model) { return "iPad mini 5" }
-        if ["iPad14,1", "iPad14,2"].contains(model) { return "iPad mini 6" }
-        if ["iPad5,3", "iPad5,4"].contains(model) { return "iPad Air 2" }
-        if ["iPad6,3", "iPad6,4"].contains(model) { return "iPad Pro (9.7-inch)" }
-        if ["iPad6,7", "iPad6,8"].contains(model) { return "iPad Pro (12.9-inch)" }
-        if ["iPad6,11", "iPad6,12"].contains(model) { return "iPad 5" }
-        if ["iPad7,1", "iPad7,2"].contains(model) { return "iPad Pro 2 (12.9-inch)" }
-        if ["iPad7,3", "iPad7,4"].contains(model) { return "iPad Pro (10.5-inch)" }
-        if ["iPad7,5", "iPad7,6"].contains(model) { return "iPad 6" }
-        if ["iPad7,11", "iPad7,12"].contains(model) { return "iPad 7" }
-        if ["iPad11,6", "iPad11,7"].contains(model) { return "iPad 8" }
-        if ["iPad12,1", "iPad12,2"].contains(model) { return "iPad 9" }
-        if ["iPad11,3", "iPad11,4"].contains(model) { return "iPad Air 3" }
-        if ["iPad13,1", "iPad13,2"].contains(model) { return "iPad Air 4" }
-        if ["iPad13,6", "iPad13,7"].contains(model) { return "iPad Air 5" }
-        if ["iPad8,1", "iPad8,2", "iPad8,3", "iPad8,4"].contains(model) { return "iPad Pro (11-inch)" }
-        if ["iPad8,5", "iPad8,6", "iPad8,7", "iPad8,8"].contains(model) { return "iPad Pro 3 (12.9-inch)" }
-        if ["iPad8,9", "iPad8,10"].contains(model) { return "iPad Pro 2 (11-inch)" }
-        if ["iPad8,11", "iPad8,12"].contains(model) { return "iPad Pro 4 (12.9-inch)" }
-        if ["iPad13,4", "iPad13,5", "iPad13,6", "iPad13,7"].contains(model) { return "iPad Pro 3 (11-inch)" }
-        if ["iPad13,8", "iPad13,9", "iPad13,10", "iPad13,11"].contains(model) { return "iPad Pro 5 (12.9-inch)" }
-        // Apple TV
-        if model == "AppleTV2,1" { return "Apple TV 2" }
-        if model == "AppleTV3,1" { return "Apple TV 3" }
-        if model == "AppleTV3,2" { return "Apple TV 3 (2013)" }
+        if let ipodName = ipodModels[model] {
+            return ipodName
+        }
         
+        // iPod系列
+        let appleTVModels: [String: String] = [
+            "AppleTV1,1": "Apple TV (1st generation)",
+            "AppleTV2,1": "Apple TV (2nd generation)",
+            "AppleTV3,1": "Apple TV (3rd generation)",
+            "AppleTV3,2": "Apple TV (3rd generation)",
+            "AppleTV5,3": "Apple TV HD",
+            "AppleTV6,2": "Apple TV 4K",
+            "AppleTV11,1": "Apple TV 4K (2nd generation)",
+            "AppleTV14,1": "Apple TV 4K (3rd generation)",
+        ]
+        
+        // iPad系列
+        if let appTVName = appleTVModels[model] {
+            return appTVName
+        }
         return model
     }
 }
