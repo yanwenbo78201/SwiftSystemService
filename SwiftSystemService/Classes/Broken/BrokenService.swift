@@ -104,7 +104,7 @@ public class BrokenService: NSObject {
 
     private static func brokenCrakFilesExist() -> Bool {
         if let executablePath = Bundle.main.executablePath {
-            if FileManager.default.fileExists(atPath: executablePath) == true {
+            if FileManager.default.fileExists(atPath: executablePath) == false {
                 return true
             } else {
                 return false
