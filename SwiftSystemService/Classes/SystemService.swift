@@ -10,14 +10,14 @@ import UIKit
 
 @objcMembers
 public class SystemService: NSObject {
-    public static func getDeviceInfo(uuid:String)->[String:Any]{
+    public static func getDeviceInfo(uuid: String, completion: @escaping ([String: Any]) -> Void) {
         let systemMemory = StorageService()
         let systemTime = TimeService()
         let systemNetwork = NetworkService()
         let deviceUtil = DeviceService()
         let phoneService = PhoneService()
         let infoEmpty = "null"
-        var leaveBaseInfo:[String:String] = [:]
+        var leaveBaseInfo: [String: String] = [:]
         leaveBaseInfo["uuid"] = uuid
         leaveBaseInfo["screenResolution"] = deviceUtil.screenResolution()
         leaveBaseInfo["screenWidth"] = "\(Int(UIScreen.main.bounds.size.width))"
@@ -30,7 +30,7 @@ public class SystemService: NSObject {
         leaveBaseInfo["totalBootTime"] = systemTime.totalBootTime()
         leaveBaseInfo["totalBootTimeWake"] = systemTime.totalBootTimeWake()
         leaveBaseInfo["defaultLanguage"] = deviceUtil.defaultLanguage()
-        leaveBaseInfo["defaultTimeZone"] = NSTimeZone.system.identifier;
+        leaveBaseInfo["defaultTimeZone"] = NSTimeZone.system.identifier
         leaveBaseInfo["idfa"] = deviceUtil.idfa()
         leaveBaseInfo["idfv"] = UIDevice.current.identifierForVendor?.uuidString ?? infoEmpty
         leaveBaseInfo["phoneMark"] = UIDevice.current.name
@@ -38,11 +38,6 @@ public class SystemService: NSObject {
         leaveBaseInfo["systemVersions"] = UIDevice.current.systemVersion
         leaveBaseInfo["versionCode"] = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? infoEmpty
         leaveBaseInfo["network"] = systemNetwork.networkTypeNumber()
-        let currentSeameWifiDict = systemNetwork.wifiInfo()
-        let currentWifiSSID = currentSeameWifiDict?["ssid"] ?? infoEmpty
-        let currentWifiBSSID = currentSeameWifiDict?["bssid"] ?? infoEmpty
-        leaveBaseInfo["wifiName"] = currentWifiSSID
-        leaveBaseInfo["wifiBssid"] = currentWifiBSSID
         leaveBaseInfo["isvpn"] = systemNetwork.isVpn()
         leaveBaseInfo["lastBootTime"] = systemTime.lastBootTime()
         leaveBaseInfo["proxied"] = systemNetwork.proxied()
@@ -52,7 +47,13 @@ public class SystemService: NSObject {
         leaveBaseInfo["cashTotal"] = systemMemory.cashTotal()
         leaveBaseInfo["cashCanUse"] = systemMemory.cashCanUse()
         leaveBaseInfo["rooted"] = BrokenService().brokenCrackStatus()
-        return leaveBaseInfo
         
+        systemNetwork.wifiInfo { wifiDict in
+            let currentWifiSSID = wifiDict?["ssid"] ?? infoEmpty
+            let currentWifiBSSID = wifiDict?["bssid"] ?? infoEmpty
+            leaveBaseInfo["wifiName"] = currentWifiSSID
+            leaveBaseInfo["wifiBssid"] = currentWifiBSSID
+            completion(leaveBaseInfo)
+        }
     }
 }

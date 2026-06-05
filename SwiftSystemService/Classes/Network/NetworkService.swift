@@ -1,6 +1,7 @@
 import UIKit
 import SystemConfiguration.CaptiveNetwork
 import CoreTelephony
+import NetworkExtension
 
 @objcMembers
 public class NetworkService: NSObject {
@@ -134,7 +135,30 @@ public class NetworkService: NSObject {
         }
     }
 
-    public func wifiInfo() -> [String: String]? {
+    public func wifiInfo(completion: @escaping ([String: String]?) -> Void) {
+        DispatchQueue.global().async {
+            if #available(iOS 14.0, *) {
+                NEHotspotNetwork.fetchCurrent { [weak self] currentNetwork in
+                    let wifiInfo: [String: String]?
+                    if let network = currentNetwork {
+                        wifiInfo = ["ssid": network.ssid, "bssid": network.bssid]
+                    } else {
+                        wifiInfo = self?.getWiFiInfoLegacy()
+                    }
+                    DispatchQueue.main.async {
+                        completion(wifiInfo)
+                    }
+                }
+            } else {
+                let wifiInfo = self.getWiFiInfoLegacy()
+                DispatchQueue.main.async {
+                    completion(wifiInfo)
+                }
+            }
+        }
+    }
+    
+    private func getWiFiInfoLegacy() -> [String: String]? {
         guard let interfaces = CNCopySupportedInterfaces() as NSArray? else {
             return nil
         }
@@ -151,4 +175,3 @@ public class NetworkService: NSObject {
         return nil
     }
 }
-

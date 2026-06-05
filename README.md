@@ -52,7 +52,9 @@ pod install
 ```swift
 import SwiftSystemService
 
-let info = SystemService.getDeviceInfo(uuid: "your-uuid")
+SystemService.getDeviceInfo(uuid: "your-uuid") { info in
+    print(info)
+}
 let network = NetworkService()
 _ = network.networkTypeDetail()
 ```
@@ -62,7 +64,9 @@ _ = network.networkTypeDetail()
 ```objc
 @import SwiftSystemService;
 
-NSDictionary *info = [SystemService getDeviceInfoWithUuid:@"your-uuid"];
+[SystemService getDeviceInfoWithUuid:@"your-uuid" completion:^(NSDictionary *info) {
+    NSLog(@"%@", info);
+}];
 NetworkService *network = [[NetworkService alloc] init];
 NSString *type = [network networkTypeDetail];
 ```

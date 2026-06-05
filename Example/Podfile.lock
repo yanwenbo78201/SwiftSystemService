@@ -1,4 +1,5 @@
 PODS:
+  - FYLocationObjc (0.1.1)
   - SwiftSystemService (0.1.5):
     - SwiftSystemService/Broken (= 0.1.5)
     - SwiftSystemService/Device (= 0.1.5)
@@ -12,15 +13,21 @@ PODS:
   - SwiftSystemService/Time (0.1.5)
 
 DEPENDENCIES:
+  - FYLocationObjc
   - SwiftSystemService (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - FYLocationObjc
 
 EXTERNAL SOURCES:
   SwiftSystemService:
     :path: "../"
 
 SPEC CHECKSUMS:
+  FYLocationObjc: d3279f1e5e029fc30919f8798a3c3b4d0c00aba0
   SwiftSystemService: b66730bba006d4e048ad43f49952adb726351a6e
 
-PODFILE CHECKSUM: 895aa17a8bb63571f5493fd3d9372d5b83cb1048
+PODFILE CHECKSUM: 50649985c50fa19aa35a1d03ac408f10484b3a43
 
 COCOAPODS: 1.16.2

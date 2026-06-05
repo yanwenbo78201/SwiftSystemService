@@ -8,13 +8,20 @@
 
 import UIKit
 import SwiftSystemService
-
+import FYLocationObjc
+import AppTrackingTransparency
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view, typically from a nib.
-        print(SystemService.getDeviceInfo(uuid: "85242112121212"))
+        LocationManager.shared().requestLocation(required: true) { result, coorde, success, alert in
+            SystemService.getDeviceInfo(uuid: "85242112121212") { info in
+                print(info)
+            }
+        }
+       
     }
 
     override func didReceiveMemoryWarning() {

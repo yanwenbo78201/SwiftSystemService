@@ -43,6 +43,7 @@
 		6102EFA94849F2775B7ABB78 /* Pods_SwiftSystemService_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSystemService_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7956C0333D010A0FC4592589 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		7B3D5BC80C763320E447B29C /* Pods-SwiftSystemService_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSystemService_Example.release.xcconfig"; path = "Target Support Files/Pods-SwiftSystemService_Example/Pods-SwiftSystemService_Example.release.xcconfig"; sourceTree = "<group>"; };
+		9ACAE24E2FD2B1CE00BAFD4A /* SwiftSystemService_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftSystemService_Example.entitlements; sourceTree = "<group>"; };
 		A6380CA1E54294D98515FC3B /* Pods_SwiftSystemService_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSystemService_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B347D736B669BAE12D35E3C6 /* Pods-SwiftSystemService_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSystemService_Example.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSystemService_Example/Pods-SwiftSystemService_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		EFDD099AF9C8791A1A445C8E /* Pods-SwiftSystemService_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSystemService_Tests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSystemService_Tests/Pods-SwiftSystemService_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				9ACAE24E2FD2B1CE00BAFD4A /* SwiftSystemService_Example.entitlements */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for SwiftSystemService */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -291,10 +293,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SwiftSystemService_Example/Pods-SwiftSystemService_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FYLocationObjc/FYLocationObjc.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSystemService/SwiftSystemService.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FYLocationObjc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSystemService.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,6 +482,7 @@
 			baseConfigurationReference = B347D736B669BAE12D35E3C6 /* Pods-SwiftSystemService_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SwiftSystemService_Example.entitlements;
 				INFOPLIST_FILE = SwiftSystemService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -494,6 +499,7 @@
 			baseConfigurationReference = 7B3D5BC80C763320E447B29C /* Pods-SwiftSystemService_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SwiftSystemService_Example.entitlements;
 				INFOPLIST_FILE = SwiftSystemService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
