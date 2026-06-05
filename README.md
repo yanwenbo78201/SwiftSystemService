@@ -6,16 +6,24 @@
 
 面向 iOS 的系统与设备信息采集库，按功能拆分为多个 **subspec**，可按需依赖。公开 API 以 `NSObject` 子类为主，支持 **Swift** 与 **Objective-C** 混编。
 
+## 特性
+
+- 📦 **模块化设计**：按功能拆分为多个 subspec，可按需引入
+- 🔄 **异步支持**：WIFI 信息等敏感操作采用异步获取，避免阻塞主线程
+- 🎯 **类型安全**：所有公开 API 均为强类型，提供良好的代码提示
+- 🌐 **双语言支持**：同时支持 Swift 和 Objective-C
+- 📱 **全面覆盖**：涵盖网络、存储、时间、设备、越狱检测等多个维度
+
 ## 功能与子模块
 
-| Subspec | 说明 | 主要类 |
-|--------|------|--------|
-| （根模块） | `SystemService`：汇总设备信息为字典 | `SystemService` |
-| `Network` | 网络类型、代理、VPN、WIFI 信息等 | `NetworkService` |
-| `Storage` | 内存、磁盘存储相关信息 | `StorageService` |
-| `Time` | 启动时间、系统运行时间等 | `TimeService` |
-| `Device` | 屏幕、CPU、IDFA、语言/时区、电量等 | `DeviceService`, `PhoneService` |
-| `Broken` | 越狱环境检测 | `BrokenService` |
+| Subspec | 说明 | 主要类 | 依赖框架 |
+|--------|------|--------|----------|
+| （根模块） | `SystemService`：汇总设备信息为字典 | `SystemService` | UIKit, CoreTelephony, AppTrackingTransparency, AdSupport |
+| `Network` | 网络类型、代理、VPN、WIFI 信息等 | `NetworkService` | UIKit, CoreTelephony, AppTrackingTransparency |
+| `Storage` | 内存、磁盘存储相关信息 | `StorageService` | UIKit |
+| `Time` | 启动时间、系统运行时间等 | `TimeService` | UIKit |
+| `Device` | 屏幕、CPU、IDFA、语言/时区、电量等 | `DeviceService`, `PhoneService` | UIKit, CoreTelephony, AppTrackingTransparency, AdSupport |
+| `Broken` | 越狱环境检测 | `BrokenService` | UIKit |
 
 默认 `pod 'SwiftSystemService'` 会引入全部子模块；若只需部分能力，可指定 subspec，例如：
 
@@ -70,7 +78,7 @@ let networkNumber = network.networkTypeNumber() // "0"-"5"
 let isVpn = network.isVpn()  // "true" or "false"
 let isProxied = network.proxied()  // "true" or "false"
 
-// 异步获取 WIFI 信息
+// 异步获取 WIFI 信息（需要特殊权限）
 network.wifiInfo { wifiDict in
     let ssid = wifiDict?["ssid"]
     let bssid = wifiDict?["bssid"]
@@ -98,7 +106,7 @@ let battery = device.batteryLevel()  // 电池电量百分比
 let isCharging = device.charged()  // 是否充电中
 let language = device.defaultLanguage()  // 默认语言
 let isDebugged = device.debugStatus()  // 是否处于调试状态
-let idfa = device.idfa()  // IDFA
+let idfa = device.idfa()  // IDFA（iOS 14+ 会请求权限）
 
 // 设备型号
 let phone = PhoneService()
@@ -127,6 +135,7 @@ NSString *networkType = [network networkTypeDetail];
 NSString *isVpn = [network isVpn];
 NSString *isProxied = [network proxied];
 
+// 异步获取 WIFI 信息
 [network wifiInfoWithCompletion:^(NSDictionary *wifiDict) {
     NSString *ssid = wifiDict[@"ssid"];
     NSString *bssid = wifiDict[@"bssid"];
@@ -205,9 +214,67 @@ NSString *isRooted = [broken brokenCrackStatus];
 | 4 | 4G |
 | 5 | 5G |
 
+## 注意事项
+
+### 权限要求
+
+- **WIFI 信息获取**：需要在 `Info.plist` 中添加以下权限：
+  ```xml
+  <key>NSAppTransportSecurity</key>
+  <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+  </dict>
+  ```
+  对于 iOS 13+，还需要添加：
+  ```xml
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>需要获取 WIFI 信息</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>需要获取 WIFI 信息</string>
+  ```
+
+- **IDFA 获取**：iOS 14+ 需要请求用户授权，库会自动处理权限请求流程。
+
+### 异步调用
+
+以下方法为异步调用，需要通过闭包/回调获取结果：
+- `SystemService.getDeviceInfo(uuid:completion:)` - 获取完整设备信息
+- `NetworkService.wifiInfo(completion:)` - 获取 WIFI 信息
+
+### 设备兼容性
+
+- iOS 14.0+：使用 `NEHotspotNetwork` 获取 WIFI 信息
+- iOS 10.0-13.x：使用 `CNCopyCurrentNetworkInfo` 获取 WIFI 信息（需要特殊权限）
+
 ## Example 工程
 
 克隆仓库后，在 `Example` 目录执行 `pod install`，再打开 `SwiftSystemService.xcworkspace` 运行示例。
+
+## 常见问题
+
+### 1. WIFI 信息获取失败？
+
+- 检查是否添加了必要的权限配置
+- 确保设备已连接 WIFI 网络
+- 在真机上测试，模拟器可能无法获取 WIFI 信息
+
+### 2. IDFA 返回 "null"？
+
+- iOS 14+ 需要用户授权，首次调用时会弹出权限请求
+- 用户拒绝授权后，IDFA 将返回 "null"
+
+### 3. 越狱检测结果不准确？
+
+- 越狱检测基于多种检测方式，可能存在误判
+- 建议结合业务场景综合判断
+
+## 更新日志
+
+### 0.1.5
+- 将 WIFI 信息获取改为异步方式
+- 更新 `SystemService.getDeviceInfo` 为异步方法
+- 优化 iOS 14+ WIFI 信息获取方式
 
 ## 作者
 
@@ -216,3 +283,9 @@ yanwenbo78201 · yanwenbo78201@gmail.com
 ## 许可
 
 基于 [MIT License](LICENSE)。
+
+## 相关链接
+
+- [GitHub 仓库](https://github.com/yanwenbo78201/SwiftSystemService)
+- [CocoaPods 页面](https://cocoapods.org/pods/SwiftSystemService)
+- [问题反馈](https://github.com/yanwenbo78201/SwiftSystemService/issues)
