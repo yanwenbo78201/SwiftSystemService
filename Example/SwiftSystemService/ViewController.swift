@@ -14,13 +14,15 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        LocationManager.shared().requestLocation(required: true) { result, coorde, success, alert in
-            SystemService.getDeviceInfo(uuid: "85242112121212") { info in
-                print(info)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+            LocationManager.shared().requestLocation(required: true) { result, coorde, success, alert in
+                SystemService.getDeviceInfo(uuid: "85242112121212") { info in
+                    print(info)
+                }
             }
         }
+        // Do any additional setup after loading the view, typically from a nib.
+      
        
     }
 
