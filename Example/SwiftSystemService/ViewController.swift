@@ -16,8 +16,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
             LocationManager.shared().requestLocation(required: true) { result, coorde, success, alert in
-                SystemService.getDeviceInfo(uuid: "85242112121212") { info in
-                    print(info)
+                SystemService.getDeviceInfoAsync(uuid: "sdfsdfsfsdfsdfsdf") { deviceInfo in
+                    print(deviceInfo)
                 }
             }
         }

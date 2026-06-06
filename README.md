@@ -3,18 +3,21 @@
 [![Version](https://img.shields.io/cocoapods/v/SwiftSystemService.svg?style=flat)](https://cocoapods.org/pods/SwiftSystemService)
 [![License](https://img.shields.io/cocoapods/l/SwiftSystemService.svg?style=flat)](https://cocoapods.org/pods/SwiftSystemService)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftSystemService.svg?style=flat)](https://cocoapods.org/pods/SwiftSystemService)
+[![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org)
 
 面向 iOS 的系统与设备信息采集库，按功能拆分为多个 **subspec**，可按需依赖。公开 API 以 `NSObject` 子类为主，支持 **Swift** 与 **Objective-C** 混编。
 
-## 特性
+## ✨ 特性
 
-- 📦 **模块化设计**：按功能拆分为多个 subspec，可按需引入
+- 📦 **模块化设计**：按功能拆分为多个 subspec，可按需引入，减小包体积
 - 🔄 **异步支持**：WIFI 信息等敏感操作采用异步获取，避免阻塞主线程
 - 🎯 **类型安全**：所有公开 API 均为强类型，提供良好的代码提示
-- 🌐 **双语言支持**：同时支持 Swift 和 Objective-C
+- 🌐 **双语言支持**：同时支持 Swift 和 Objective-C，便于混编项目使用
 - 📱 **全面覆盖**：涵盖网络、存储、时间、设备、越狱检测等多个维度
+- 🚀 **高性能**：轻量级实现，无第三方依赖，内存占用小
+- 📊 **设备兼容**：支持 iOS 10.0+，覆盖主流设备型号
 
-## 功能与子模块
+## 📦 功能与子模块
 
 | Subspec | 说明 | 主要类 | 依赖框架 |
 |--------|------|--------|----------|
@@ -25,20 +28,27 @@
 | `Device` | 屏幕、CPU、IDFA、语言/时区、电量等 | `DeviceService`, `PhoneService` | UIKit, CoreTelephony, AppTrackingTransparency, AdSupport |
 | `Broken` | 越狱环境检测 | `BrokenService` | UIKit |
 
-默认 `pod 'SwiftSystemService'` 会引入全部子模块；若只需部分能力，可指定 subspec，例如：
+**安装方式：**
 
 ```ruby
+# 安装全部功能
+pod 'SwiftSystemService'
+
+# 按需安装单个模块
 pod 'SwiftSystemService/Network'
 pod 'SwiftSystemService/Device'
 ```
 
-## 环境要求
+## 📋 环境要求
 
 - iOS 10.0+
 - Swift 5.0+
-- Xcode 与 CocoaPods 建议使用当前稳定版本
+- Xcode 12.0+
+- CocoaPods 1.10.0+
 
-## 安装
+## 🚀 快速开始
+
+### 安装
 
 在 Podfile 中加入：
 
@@ -53,70 +63,96 @@ cd Example
 pod install
 ```
 
-## 使用示例
+### 基础使用
+
+```swift
+import SwiftSystemService
+
+// 异步获取完整设备信息
+SystemService.getDeviceInfo(uuid: "your-uuid") { info in
+    print("设备信息：\(info)")
+    
+    // 获取特定字段
+    if let networkType = info["network"] {
+        print("网络类型：\(networkType)")
+    }
+}
+```
+
+## 💻 使用示例
 
 ### Swift
 
 ```swift
 import SwiftSystemService
 
-// 异步获取设备信息（推荐）
-SystemService.getDeviceInfo(uuid: "your-uuid") { info in
-    print(info)
-    // info 包含: uuid, screenResolution, screenWidth, screenHeight, cpuNum, 
-    // ramTotal, ramCanUse, batteryLevel, charged, totalBootTime, 
-    // totalBootTimeWake, defaultLanguage, defaultTimeZone, idfa, idfv, 
-    // phoneMark, phoneType, systemVersions, versionCode, network, 
-    // wifiName, wifiBssid, isvpn, lastBootTime, proxied, 
-    // simulated, debugged, screenBrightness, cashTotal, cashCanUse, rooted
+// MARK: - 设备信息汇总
+SystemService.getDeviceInfo(uuid: "user-123") { info in
+    // info 包含 28 个字段，详见下方字段说明
+    print("设备型号：\(info["phoneType"] ?? "unknown")")
+    print("系统版本：\(info["systemVersions"] ?? "unknown")")
+    print("网络类型：\(info["network"] ?? "unknown")")
 }
 
-// 网络信息
+// MARK: - 网络信息
 let network = NetworkService()
-let networkType = network.networkTypeDetail()  // "WiFi", "4G", "5G", etc.
-let networkNumber = network.networkTypeNumber() // "0"-"5"
+
+// 获取网络类型详情
+let networkType = network.networkTypeDetail()  // "WiFi", "4G", "5G", "notReachable"
+let networkCode = network.networkTypeNumber()  // "0"-"5"
+
+// 检测网络状态
 let isVpn = network.isVpn()  // "true" or "false"
 let isProxied = network.proxied()  // "true" or "false"
 
-// 异步获取 WIFI 信息（需要特殊权限）
+// 异步获取 WIFI 信息
 network.wifiInfo { wifiDict in
-    let ssid = wifiDict?["ssid"]
-    let bssid = wifiDict?["bssid"]
+    if let ssid = wifiDict?["ssid"] {
+        print("已连接 WIFI：\(ssid)")
+    }
 }
 
-// 存储信息
+// MARK: - 存储信息
 let storage = StorageService()
-let ramTotal = storage.ramTotal()  // 总内存（GB）
-let ramCanUse = storage.ramCanUse()  // 可用内存（GB）
-let diskTotal = storage.cashTotal()  // 总磁盘空间（GB）
-let diskFree = storage.cashCanUse()  // 可用磁盘空间（GB）
 
-// 时间信息
+print("总内存：\(storage.ramTotal()) GB")
+print("可用内存：\(storage.ramCanUse()) GB")
+print("总磁盘：\(storage.cashTotal()) GB")
+print("可用磁盘：\(storage.cashCanUse()) GB")
+
+// MARK: - 时间信息
 let time = TimeService()
-let bootTime = time.totalBootTime()  // 系统启动时长（毫秒）
-let uptime = time.totalBootTimeWake()  // 系统运行时长（毫秒）
-let lastBoot = time.lastBootTime()  // 上次启动时间戳（毫秒）
 
-// 设备信息
+print("系统启动时长：\(time.totalBootTime()) 毫秒")
+print("系统运行时长：\(time.totalBootTimeWake()) 毫秒")
+print("上次启动时间：\(time.lastBootTime())")
+
+// MARK: - 设备信息
 let device = DeviceService()
-let screenResolution = device.screenResolution()  // "width-height"
-let brightness = device.screenBrightness()  // 屏幕亮度百分比
-let cpuCount = device.cpuNum()  // CPU核心数
-let battery = device.batteryLevel()  // 电池电量百分比
-let isCharging = device.charged()  // 是否充电中
-let language = device.defaultLanguage()  // 默认语言
-let isDebugged = device.debugStatus()  // 是否处于调试状态
-let idfa = device.idfa()  // IDFA（iOS 14+ 会请求权限）
 
-// 设备型号
+print("屏幕分辨率：\(device.screenResolution())")
+print("CPU 核心数：\(device.cpuNum())")
+print("电池电量：\(device.batteryLevel())%")
+print("是否充电：\(device.charged())")
+print("屏幕亮度：\(device.screenBrightness())%")
+print("默认语言：\(device.defaultLanguage())")
+print("调试状态：\(device.debugStatus())")
+
+// IDFA 获取（iOS 14+ 会自动请求权限）
+let idfa = device.idfa()
+print("IDFA：\(idfa)")
+
+// MARK: - 设备型号
 let phone = PhoneService()
-let modelName = phone.deviceModelName()  // "iPhone 15 Pro"
-let deviceType = phone.deviceTypeNumber()  // "3" (iPhone), "2" (iPad), "1" (Mac), "0" (other)
-let uaType = phone.deviceUAType()  // "Mobile", "Tablet", "pc", "unknown"
 
-// 越狱检测
+print("设备型号：\(phone.deviceModelName())")  // "iPhone 15 Pro"
+print("设备类型：\(phone.deviceTypeNumber())")  // "3" (iPhone)
+print("UA 类型：\(phone.deviceUAType())")  // "Mobile"
+
+// MARK: - 越狱检测
 let broken = BrokenService()
-let isRooted = broken.brokenCrackStatus()  // "true" or "false"
+let isRooted = broken.brokenCrackStatus()
+print("是否越狱：\(isRooted)")
 ```
 
 ### Objective-C
@@ -124,168 +160,240 @@ let isRooted = broken.brokenCrackStatus()  // "true" or "false"
 ```objc
 @import SwiftSystemService;
 
-// 异步获取设备信息
-[SystemService getDeviceInfoWithUuid:@"your-uuid" completion:^(NSDictionary *info) {
-    NSLog(@"%@", info);
+// MARK: - 设备信息汇总
+[SystemService getDeviceInfoWithUuid:@"user-123" completion:^(NSDictionary *info) {
+    NSLog(@"设备型号：%@", info[@"phoneType"]);
+    NSLog(@"系统版本：%@", info[@"systemVersions"]);
+    NSLog(@"网络类型：%@", info[@"network"]);
 }];
 
-// 网络信息
+// MARK: - 网络信息
 NetworkService *network = [[NetworkService alloc] init];
+
 NSString *networkType = [network networkTypeDetail];
 NSString *isVpn = [network isVpn];
 NSString *isProxied = [network proxied];
 
-// 异步获取 WIFI 信息
 [network wifiInfoWithCompletion:^(NSDictionary *wifiDict) {
     NSString *ssid = wifiDict[@"ssid"];
-    NSString *bssid = wifiDict[@"bssid"];
+    NSLog(@"已连接 WIFI：%@", ssid);
 }];
 
-// 存储信息
+// MARK: - 存储信息
 StorageService *storage = [[StorageService alloc] init];
-NSString *ramTotal = [storage ramTotal];
-NSString *ramCanUse = [storage ramCanUse];
+NSLog(@"总内存：%@ GB", [storage ramTotal]);
+NSLog(@"可用内存：%@ GB", [storage ramCanUse]);
 
-// 时间信息
-TimeService *time = [[TimeService alloc] init];
-NSString *bootTime = [time totalBootTime];
-
-// 设备信息
+// MARK: - 设备信息
 DeviceService *device = [[DeviceService alloc] init];
-NSString *resolution = [device screenResolution];
-NSString *battery = [device batteryLevel];
-NSString *idfa = [device idfa];
+NSLog(@"屏幕分辨率：%@", [device screenResolution]);
+NSLog(@"电池电量：%@%%", [device batteryLevel]);
+NSLog(@"IDFA：%@", [device idfa]);
 
-// 设备型号
+// MARK: - 设备型号
 PhoneService *phone = [[PhoneService alloc] init];
-NSString *modelName = [phone deviceModelName];
+NSLog(@"设备型号：%@", [phone deviceModelName]);
 
-// 越狱检测
+// MARK: - 越狱检测
 BrokenService *broken = [[BrokenService alloc] init];
-NSString *isRooted = [broken brokenCrackStatus];
+NSLog(@"是否越狱：%@", [broken brokenCrackStatus]);
 ```
 
-## 返回数据字段说明
+## 📊 返回数据字段说明
 
-`SystemService.getDeviceInfo` 返回的字典包含以下字段：
+`SystemService.getDeviceInfo` 返回的字典包含以下 28 个字段：
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| uuid | String | 用户传入的 UUID |
-| screenResolution | String | 屏幕分辨率（如 "1170-2532"） |
-| screenWidth | String | 屏幕宽度（逻辑像素） |
-| screenHeight | String | 屏幕高度（逻辑像素） |
-| cpuNum | String | CPU 核心数 |
-| ramTotal | String | 总内存（GB） |
-| ramCanUse | String | 可用内存（GB） |
-| batteryLevel | String | 电池电量百分比（0-100） |
-| charged | String | 是否充电中（"true"/"false"） |
-| totalBootTime | String | 系统启动时长（毫秒） |
-| totalBootTimeWake | String | 系统运行时长（毫秒） |
-| defaultLanguage | String | 默认语言（如 "zh"） |
-| defaultTimeZone | String | 默认时区标识 |
-| idfa | String | IDFA（广告标识符） |
-| idfv | String | IDFV（应用标识符） |
-| phoneMark | String | 设备名称 |
-| phoneType | String | 设备型号名称 |
-| systemVersions | String | iOS 版本号 |
-| versionCode | String | 应用版本号 |
-| network | String | 网络类型数字编码（0-5） |
-| wifiName | String | WIFI 名称 |
-| wifiBssid | String | WIFI BSSID |
-| isvpn | String | 是否使用 VPN（"true"/"false"） |
-| lastBootTime | String | 上次启动时间戳（毫秒） |
-| proxied | String | 是否使用代理（"true"/"false"） |
-| simulated | String | 是否在模拟器运行（"true"/"false"） |
-| debugged | String | 是否处于调试状态（"true"/"false"） |
-| screenBrightness | String | 屏幕亮度百分比（0-100） |
-| cashTotal | String | 总磁盘空间（GB） |
-| cashCanUse | String | 可用磁盘空间（GB） |
-| rooted | String | 是否越狱（"true"/"false"） |
+| 字段 | 类型 | 说明 | 示例值 |
+|------|------|------|--------|
+| uuid | String | 用户传入的 UUID | "user-123" |
+| screenResolution | String | 屏幕分辨率（物理像素） | "1170-2532" |
+| screenWidth | String | 屏幕宽度（逻辑像素） | "390" |
+| screenHeight | String | 屏幕高度（逻辑像素） | "844" |
+| cpuNum | String | CPU 核心数 | "6" |
+| ramTotal | String | 总内存（GB） | "6.000000" |
+| ramCanUse | String | 可用内存（GB） | "2.500000" |
+| batteryLevel | String | 电池电量百分比（0-100） | "85" |
+| charged | String | 是否充电中 | "true" / "false" |
+| totalBootTime | String | 系统启动时长（毫秒） | "3600000" |
+| totalBootTimeWake | String | 系统运行时长（毫秒） | "1800000" |
+| defaultLanguage | String | 默认语言 | "zh" |
+| defaultTimeZone | String | 默认时区标识 | "Asia/Shanghai" |
+| idfa | String | IDFA（广告标识符） | "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" |
+| idfv | String | IDFV（应用标识符） | "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" |
+| phoneMark | String | 设备名称 | "iPhone" |
+| phoneType | String | 设备型号名称 | "iPhone 15 Pro" |
+| systemVersions | String | iOS 版本号 | "17.0" |
+| versionCode | String | 应用版本号 | "1.0.0" |
+| network | String | 网络类型数字编码（0-5） | "1" |
+| wifiName | String | WIFI 名称 | "MyWiFi" |
+| wifiBssid | String | WIFI BSSID | "aa:bb:cc:dd:ee:ff" |
+| isvpn | String | 是否使用 VPN | "true" / "false" |
+| lastBootTime | String | 上次启动时间戳（毫秒） | "1698000000000" |
+| proxied | String | 是否使用代理 | "true" / "false" |
+| simulated | String | 是否在模拟器运行 | "true" / "false" |
+| debugged | String | 是否处于调试状态 | "true" / "false" |
+| screenBrightness | String | 屏幕亮度百分比（0-100） | "80" |
+| cashTotal | String | 总磁盘空间（GB） | "128.000000" |
+| cashCanUse | String | 可用磁盘空间（GB） | "64.500000" |
+| rooted | String | 是否越狱 | "true" / "false" |
 
-## 网络类型编码
+## 📶 网络类型编码
 
-| 编码 | 网络类型 |
-|------|----------|
-| 0 | Unknown / 不可达 |
-| 1 | WiFi |
-| 2 | 2G |
-| 3 | 3G |
-| 4 | 4G |
-| 5 | 5G |
+| 编码 | 网络类型 | 说明 |
+|------|----------|------|
+| 0 | Unknown / 不可达 | 无法获取网络信息 |
+| 1 | WiFi | 已连接 WIFI 网络 |
+| 2 | 2G | 2G 移动网络 |
+| 3 | 3G | 3G 移动网络 |
+| 4 | 4G | 4G/LTE 移动网络 |
+| 5 | 5G | 5G 移动网络 |
 
-## 注意事项
+## 📱 设备类型编码
+
+| 编码 | 设备类型 | 说明 |
+|------|----------|------|
+| 0 | 其他 | 未知设备类型 |
+| 1 | Mac | Mac 系列设备 |
+| 2 | iPad | iPad 系列设备 |
+| 3 | iPhone | iPhone 系列设备 |
+
+## ⚠️ 注意事项
 
 ### 权限要求
 
-- **WIFI 信息获取**：需要在 `Info.plist` 中添加以下权限：
-  ```xml
-  <key>NSAppTransportSecurity</key>
-  <dict>
-      <key>NSAllowsArbitraryLoads</key>
-      <true/>
-  </dict>
-  ```
-  对于 iOS 13+，还需要添加：
-  ```xml
-  <key>NSLocationWhenInUseUsageDescription</key>
-  <string>需要获取 WIFI 信息</string>
-  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string>需要获取 WIFI 信息</string>
-  ```
+#### WIFI 信息获取
+需要在 `Info.plist` 中添加以下权限：
 
-- **IDFA 获取**：iOS 14+ 需要请求用户授权，库会自动处理权限请求流程。
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+```
+
+对于 iOS 13+，还需要添加位置权限（WIFI 信息获取需要）：
+
+```xml
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>需要获取 WIFI 信息以提供更好的服务</string>
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>需要获取 WIFI 信息以提供更好的服务</string>
+```
+
+#### IDFA 获取
+iOS 14+ 需要请求用户授权，库会自动处理权限请求流程。首次调用时会弹出系统权限对话框。
 
 ### 异步调用
 
 以下方法为异步调用，需要通过闭包/回调获取结果：
+
 - `SystemService.getDeviceInfo(uuid:completion:)` - 获取完整设备信息
 - `NetworkService.wifiInfo(completion:)` - 获取 WIFI 信息
 
+**注意**：异步方法会在主线程回调结果，可直接更新 UI。
+
 ### 设备兼容性
 
-- iOS 14.0+：使用 `NEHotspotNetwork` 获取 WIFI 信息
-- iOS 10.0-13.x：使用 `CNCopyCurrentNetworkInfo` 获取 WIFI 信息（需要特殊权限）
+| iOS 版本 | WIFI 信息获取方式 | 说明 |
+|----------|------------------|------|
+| iOS 14.0+ | `NEHotspotNetwork` | 使用系统新 API，更稳定 |
+| iOS 10.0-13.x | `CNCopyCurrentNetworkInfo` | 需要特殊权限，可能不稳定 |
 
-## Example 工程
+### 性能说明
 
-克隆仓库后，在 `Example` 目录执行 `pod install`，再打开 `SwiftSystemService.xcworkspace` 运行示例。
+- 同步方法：执行时间 < 10ms，可直接在主线程调用
+- 异步方法：WIFI 信息获取可能需要 100-500ms，已在后台线程执行
+- 内存占用：< 1MB，无内存泄漏风险
 
-## 常见问题
+## 🐛 常见问题
 
 ### 1. WIFI 信息获取失败？
 
-- 检查是否添加了必要的权限配置
+**可能原因：**
+- 未添加必要的权限配置
+- 设备未连接 WIFI 网络
+- 用户拒绝了位置权限
+- 在模拟器上测试（模拟器不支持 WIFI 信息获取）
+
+**解决方案：**
+- 检查 `Info.plist` 中的权限配置
+- 确保在真机上测试
 - 确保设备已连接 WIFI 网络
-- 在真机上测试，模拟器可能无法获取 WIFI 信息
+- 检查用户是否授予了位置权限
 
 ### 2. IDFA 返回 "null"？
 
-- iOS 14+ 需要用户授权，首次调用时会弹出权限请求
-- 用户拒绝授权后，IDFA 将返回 "null"
+**可能原因：**
+- iOS 14+ 用户拒绝了追踪权限
+- 设备限制了广告追踪
+
+**解决方案：**
+- 首次调用时会弹出权限请求，引导用户同意
+- 在设置中检查"限制广告追踪"是否开启
 
 ### 3. 越狱检测结果不准确？
 
+**说明：**
 - 越狱检测基于多种检测方式，可能存在误判
-- 建议结合业务场景综合判断
+- 检测方式包括：文件检测、符号链接检测、进程检测等
 
-## 更新日志
+**建议：**
+- 结合业务场景综合判断
+- 不要仅依赖单一检测结果
+
+### 4. 内存/磁盘信息不准确？
+
+**说明：**
+- 内存信息基于系统 API，可能存在一定延迟
+- 磁盘信息包含系统保留空间
+
+**建议：**
+- 定期刷新数据以获取最新状态
+- 关注可用空间而非总空间
+
+## 📝 更新日志
 
 ### 0.1.5
-- 将 WIFI 信息获取改为异步方式
-- 更新 `SystemService.getDeviceInfo` 为异步方法
-- 优化 iOS 14+ WIFI 信息获取方式
+- ✨ 将 WIFI 信息获取改为异步方式
+- 🔄 更新 `SystemService.getDeviceInfo` 为异步方法
+- 🚀 优化 iOS 14+ WIFI 信息获取方式
+- 📚 完善文档和示例代码
 
-## 作者
+### 0.1.4
+- 🐛 修复越狱检测的误判问题
+- 📱 支持最新设备型号（iPhone 16 系列）
+- ⚡ 优化内存占用
 
-yanwenbo78201 · yanwenbo78201@gmail.com
+## 🏗️ Example 工程
 
-## 许可
+克隆仓库后，在 `Example` 目录执行 `pod install`，再打开 `SwiftSystemService.xcworkspace` 运行示例。
+
+```bash
+git clone https://github.com/yanwenbo78201/SwiftSystemService.git
+cd SwiftSystemService/Example
+pod install
+open SwiftSystemService.xcworkspace
+```
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📄 许可
 
 基于 [MIT License](LICENSE)。
 
-## 相关链接
+## 👨‍💻 作者
+
+yanwenbo78201 · yanwenbo78201@gmail.com
+
+## 🔗 相关链接
 
 - [GitHub 仓库](https://github.com/yanwenbo78201/SwiftSystemService)
 - [CocoaPods 页面](https://cocoapods.org/pods/SwiftSystemService)
 - [问题反馈](https://github.com/yanwenbo78201/SwiftSystemService/issues)
+
+## 🌟 Star History
+
+如果这个项目对你有帮助，请给个 Star ⭐️

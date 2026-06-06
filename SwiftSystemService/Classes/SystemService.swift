@@ -10,47 +10,76 @@ import UIKit
 
 @objcMembers
 public class SystemService: NSObject {
-    public static func getDeviceInfo(uuid: String, completion: @escaping ([String: Any]) -> Void) {
-        let systemMemory = StorageService()
-        let systemTime = TimeService()
+    
+    @objc public static func getDeviceInfoDataSyncWithOutWifi(uuid:String)->[String:String]{
+        var leaveBaseInfo = getDeviceInfoDataSyncWithOutWifi()
+        leaveBaseInfo["uuid"] = uuid;
+        return leaveBaseInfo
+    }
+    
+   @objc public static func getDeviceInfoDataSyncWithOutWifi()->[String:String]{
+       let systemMemory = StorageService()
+       let systemTime = TimeService()
+       let systemNetwork = NetworkService()
+       let deviceUtil = DeviceService()
+       let phoneService = PhoneService()
+       let infoEmpty = "null"
+       var leaveBaseInfo:[String:String] = [:]
+       leaveBaseInfo["screenResolution"] = deviceUtil.screenResolution()
+       leaveBaseInfo["screenWidth"] = "\(Int(UIScreen.main.bounds.size.width))"
+       leaveBaseInfo["screenHeight"] = "\(Int(UIScreen.main.bounds.size.height))"
+       leaveBaseInfo["cpuNum"] = deviceUtil.cpuNum()
+       leaveBaseInfo["ramTotal"] = systemMemory.ramTotal()
+       leaveBaseInfo["ramCanUse"] = systemMemory.ramCanUse()
+       leaveBaseInfo["batteryLevel"] = "\(deviceUtil.batteryLevel())"
+       leaveBaseInfo["charged"] = deviceUtil.charged()
+       leaveBaseInfo["totalBootTime"] = systemTime.totalBootTime()
+       leaveBaseInfo["totalBootTimeWake"] = systemTime.totalBootTimeWake()
+       leaveBaseInfo["defaultLanguage"] = deviceUtil.defaultLanguage()
+       leaveBaseInfo["defaultTimeZone"] = NSTimeZone.system.identifier;
+       leaveBaseInfo["idfa"] = deviceUtil.idfa()
+       leaveBaseInfo["idfv"] = UIDevice.current.identifierForVendor?.uuidString ?? infoEmpty
+       leaveBaseInfo["phoneMark"] = UIDevice.current.name
+       leaveBaseInfo["phoneType"] = phoneService.deviceModelName()
+       leaveBaseInfo["systemVersions"] = UIDevice.current.systemVersion
+       leaveBaseInfo["versionCode"] = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? infoEmpty
+       leaveBaseInfo["network"] = systemNetwork.networkTypeNumber()
+       leaveBaseInfo["isvpn"] = systemNetwork.isVpn()
+       leaveBaseInfo["lastBootTime"] = systemTime.lastBootTime()
+       leaveBaseInfo["proxied"] = systemNetwork.proxied()
+       leaveBaseInfo["simulated"] = phoneService.deviceModelName().contains("Simulator") == true ? "true" : "false"
+       leaveBaseInfo["debugged"] = deviceUtil.debugStatus()
+       leaveBaseInfo["screenBrightness"] = deviceUtil.screenBrightness()
+       leaveBaseInfo["cashTotal"] = systemMemory.cashTotal()
+       leaveBaseInfo["cashCanUse"] = systemMemory.cashCanUse()
+       leaveBaseInfo["rooted"] = BrokenService().brokenCrackStatus()
+        return leaveBaseInfo
+    }
+    @objc public static func getDeviceInfoAsyncWithOutUuid(completion: @escaping ([String: Any]) -> Void) {
         let systemNetwork = NetworkService()
-        let deviceUtil = DeviceService()
-        let phoneService = PhoneService()
         let infoEmpty = "null"
-        var leaveBaseInfo: [String: String] = [:]
-        leaveBaseInfo["uuid"] = uuid
-        leaveBaseInfo["screenResolution"] = deviceUtil.screenResolution()
-        leaveBaseInfo["screenWidth"] = "\(Int(UIScreen.main.bounds.size.width))"
-        leaveBaseInfo["screenHeight"] = "\(Int(UIScreen.main.bounds.size.height))"
-        leaveBaseInfo["cpuNum"] = deviceUtil.cpuNum()
-        leaveBaseInfo["ramTotal"] = systemMemory.ramTotal()
-        leaveBaseInfo["ramCanUse"] = systemMemory.ramCanUse()
-        leaveBaseInfo["batteryLevel"] = "\(deviceUtil.batteryLevel())"
-        leaveBaseInfo["charged"] = deviceUtil.charged()
-        leaveBaseInfo["totalBootTime"] = systemTime.totalBootTime()
-        leaveBaseInfo["totalBootTimeWake"] = systemTime.totalBootTimeWake()
-        leaveBaseInfo["defaultLanguage"] = deviceUtil.defaultLanguage()
-        leaveBaseInfo["defaultTimeZone"] = NSTimeZone.system.identifier
-        leaveBaseInfo["idfa"] = deviceUtil.idfa()
-        leaveBaseInfo["idfv"] = UIDevice.current.identifierForVendor?.uuidString ?? infoEmpty
-        leaveBaseInfo["phoneMark"] = UIDevice.current.name
-        leaveBaseInfo["phoneType"] = phoneService.deviceModelName()
-        leaveBaseInfo["systemVersions"] = UIDevice.current.systemVersion
-        leaveBaseInfo["versionCode"] = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? infoEmpty
-        leaveBaseInfo["network"] = systemNetwork.networkTypeNumber()
-        leaveBaseInfo["isvpn"] = systemNetwork.isVpn()
-        leaveBaseInfo["lastBootTime"] = systemTime.lastBootTime()
-        leaveBaseInfo["proxied"] = systemNetwork.proxied()
-        leaveBaseInfo["simulated"] = phoneService.deviceModelName().contains("Simulator") == true ? "true" : "false"
-        leaveBaseInfo["debugged"] = deviceUtil.debugStatus()
-        leaveBaseInfo["screenBrightness"] = deviceUtil.screenBrightness()
-        leaveBaseInfo["cashTotal"] = systemMemory.cashTotal()
-        leaveBaseInfo["cashCanUse"] = systemMemory.cashCanUse()
-        leaveBaseInfo["rooted"] = BrokenService().brokenCrackStatus()
-        
-        systemNetwork.wifiInfo { wifiDict in
-            let currentWifiSSID = wifiDict?["ssid"] ?? infoEmpty
-            let currentWifiBSSID = wifiDict?["bssid"] ?? infoEmpty
+        var leaveBaseInfo = getDeviceInfoDataSyncWithOutWifi()
+        // 异步获取 WiFi 信息
+        systemNetwork.wifiInfo { wifiInfo in
+            let currentWifiSSID = wifiInfo?["ssid"] ?? infoEmpty
+            let currentWifiBSSID = wifiInfo?["bssid"] ?? infoEmpty
+            leaveBaseInfo["wifiName"] = currentWifiSSID
+            leaveBaseInfo["wifiBssid"] = currentWifiBSSID
+            completion(leaveBaseInfo)
+        }
+    }
+    
+    
+    /// 异步获取设备信息（包含 WiFi 信息）
+    @objc public static func getDeviceInfoAsync(uuid: String, completion: @escaping ([String: Any]) -> Void) {
+
+        let systemNetwork = NetworkService()
+        let infoEmpty = "null"
+        var leaveBaseInfo = getDeviceInfoDataSyncWithOutWifi(uuid: uuid)
+        // 异步获取 WiFi 信息
+        systemNetwork.wifiInfo { wifiInfo in
+            let currentWifiSSID = wifiInfo?["ssid"] ?? infoEmpty
+            let currentWifiBSSID = wifiInfo?["bssid"] ?? infoEmpty
             leaveBaseInfo["wifiName"] = currentWifiSSID
             leaveBaseInfo["wifiBssid"] = currentWifiBSSID
             completion(leaveBaseInfo)
