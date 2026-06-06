@@ -1,16 +1,16 @@
 PODS:
   - FYLocationObjc (0.1.1)
-  - SwiftSystemService (0.1.5):
-    - SwiftSystemService/Broken (= 0.1.5)
-    - SwiftSystemService/Device (= 0.1.5)
-    - SwiftSystemService/Network (= 0.1.5)
-    - SwiftSystemService/Storage (= 0.1.5)
-    - SwiftSystemService/Time (= 0.1.5)
-  - SwiftSystemService/Broken (0.1.5)
-  - SwiftSystemService/Device (0.1.5)
-  - SwiftSystemService/Network (0.1.5)
-  - SwiftSystemService/Storage (0.1.5)
-  - SwiftSystemService/Time (0.1.5)
+  - SwiftSystemService (0.1.6):
+    - SwiftSystemService/Broken (= 0.1.6)
+    - SwiftSystemService/Device (= 0.1.6)
+    - SwiftSystemService/Network (= 0.1.6)
+    - SwiftSystemService/Storage (= 0.1.6)
+    - SwiftSystemService/Time (= 0.1.6)
+  - SwiftSystemService/Broken (0.1.6)
+  - SwiftSystemService/Device (0.1.6)
+  - SwiftSystemService/Network (0.1.6)
+  - SwiftSystemService/Storage (0.1.6)
+  - SwiftSystemService/Time (0.1.6)
 
 DEPENDENCIES:
   - FYLocationObjc
@@ -26,7 +26,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FYLocationObjc: d3279f1e5e029fc30919f8798a3c3b4d0c00aba0
-  SwiftSystemService: b66730bba006d4e048ad43f49952adb726351a6e
+  SwiftSystemService: fc20f524947d64e864d6c40566ede729e8c2da75
 
 PODFILE CHECKSUM: 50649985c50fa19aa35a1d03ac408f10484b3a43
 
