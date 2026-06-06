@@ -68,8 +68,8 @@ pod install
 ```swift
 import SwiftSystemService
 
-// 异步获取完整设备信息
-SystemService.getDeviceInfo(uuid: "your-uuid") { info in
+// 异步获取完整设备信息（包含 WiFi 信息）
+SystemService.getDeviceInfoAsync(uuid: "your-uuid") { info in
     print("设备信息：\(info)")
     
     // 获取特定字段
@@ -77,6 +77,10 @@ SystemService.getDeviceInfo(uuid: "your-uuid") { info in
         print("网络类型：\(networkType)")
     }
 }
+
+// 同步获取设备信息（不含 WiFi 信息，快速响应）
+let info = SystemService.getDeviceInfoDataSyncWithOutWifi(uuid: "your-uuid")
+print("设备信息：\(info)")
 ```
 
 ## 💻 使用示例
@@ -86,13 +90,31 @@ SystemService.getDeviceInfo(uuid: "your-uuid") { info in
 ```swift
 import SwiftSystemService
 
-// MARK: - 设备信息汇总
-SystemService.getDeviceInfo(uuid: "user-123") { info in
-    // info 包含 28 个字段，详见下方字段说明
+// MARK: - 设备信息汇总（异步，包含 WiFi 信息）
+
+// 带 UUID 的异步方法
+SystemService.getDeviceInfoAsync(uuid: "user-123") { info in
     print("设备型号：\(info["phoneType"] ?? "unknown")")
     print("系统版本：\(info["systemVersions"] ?? "unknown")")
     print("网络类型：\(info["network"] ?? "unknown")")
+    print("WiFi 名称：\(info["wifiName"] ?? "unknown")")
+    print("WiFi BSSID：\(info["wifiBssid"] ?? "unknown")")
 }
+
+// 不带 UUID 的异步方法
+SystemService.getDeviceInfoAsyncWithOutUuid { info in
+    print("设备信息：\(info)")
+}
+
+// MARK: - 设备信息汇总（同步，不含 WiFi 信息）
+
+// 带 UUID 的同步方法
+let infoWithUuid = SystemService.getDeviceInfoDataSyncWithOutWifi(uuid: "user-123")
+print("设备型号：\(infoWithUuid["phoneType"] ?? "unknown")")
+
+// 不带 UUID 的同步方法
+let infoWithoutUuid = SystemService.getDeviceInfoDataSyncWithOutWifi()
+print("设备型号：\(infoWithoutUuid["phoneType"] ?? "unknown")")
 
 // MARK: - 网络信息
 let network = NetworkService()
@@ -160,12 +182,29 @@ print("是否越狱：\(isRooted)")
 ```objc
 @import SwiftSystemService;
 
-// MARK: - 设备信息汇总
-[SystemService getDeviceInfoWithUuid:@"user-123" completion:^(NSDictionary *info) {
+// MARK: - 设备信息汇总（异步，包含 WiFi 信息）
+
+// 带 UUID 的异步方法
+[SystemService getDeviceInfoAsyncWithUuid:@"user-123" completion:^(NSDictionary *info) {
     NSLog(@"设备型号：%@", info[@"phoneType"]);
     NSLog(@"系统版本：%@", info[@"systemVersions"]);
-    NSLog(@"网络类型：%@", info[@"network"]);
+    NSLog(@"WiFi 名称：%@", info[@"wifiName"]);
 }];
+
+// 不带 UUID 的异步方法
+[SystemService getDeviceInfoAsyncWithOutUuid:^(NSDictionary *info) {
+    NSLog(@"设备信息：%@", info);
+}];
+
+// MARK: - 设备信息汇总（同步，不含 WiFi 信息）
+
+// 带 UUID 的同步方法
+NSDictionary *infoWithUuid = [SystemService getDeviceInfoDataSyncWithOutWifiWithUuid:@"user-123"];
+NSLog(@"设备型号：%@", infoWithUuid[@"phoneType"]);
+
+// 不带 UUID 的同步方法
+NSDictionary *infoWithoutUuid = [SystemService getDeviceInfoDataSyncWithOutWifi];
+NSLog(@"设备型号：%@", infoWithoutUuid[@"phoneType"]);
 
 // MARK: - 网络信息
 NetworkService *network = [[NetworkService alloc] init];
@@ -199,13 +238,30 @@ BrokenService *broken = [[BrokenService alloc] init];
 NSLog(@"是否越狱：%@", [broken brokenCrackStatus]);
 ```
 
+## 📋 API 概览
+
+### SystemService 方法列表
+
+| 方法 | 返回类型 | 说明 |
+|------|----------|------|
+| `getDeviceInfoAsync(uuid:completion:)` | 异步 | 异步获取完整设备信息（包含 WiFi 信息） |
+| `getDeviceInfoAsyncWithOutUuid(completion:)` | 异步 | 异步获取设备信息（包含 WiFi 信息，不含 UUID） |
+| `getDeviceInfoDataSyncWithOutWifi(uuid:)` | `[String: String]` | 同步获取设备信息（不含 WiFi 信息，带 UUID） |
+| `getDeviceInfoDataSyncWithOutWifi()` | `[String: String]` | 同步获取设备信息（不含 WiFi 信息，不含 UUID） |
+
+### 方法选择建议
+
+- **需要 WiFi 信息**：使用异步方法（`getDeviceInfoAsync` 或 `getDeviceInfoAsyncWithOutUuid`）
+- **不需要 WiFi 信息，追求快速响应**：使用同步方法（`getDeviceInfoDataSyncWithOutWifi`）
+- **需要 UUID 标识**：选择带 `uuid:` 参数的方法
+
 ## 📊 返回数据字段说明
 
-`SystemService.getDeviceInfo` 返回的字典包含以下 28 个字段：
+`SystemService` 返回的字典包含以下字段：
 
 | 字段 | 类型 | 说明 | 示例值 |
 |------|------|------|--------|
-| uuid | String | 用户传入的 UUID | "user-123" |
+| uuid | String | 用户传入的 UUID（仅异步方法带 uuid 参数时返回） | "user-123" |
 | screenResolution | String | 屏幕分辨率（物理像素） | "1170-2532" |
 | screenWidth | String | 屏幕宽度（逻辑像素） | "390" |
 | screenHeight | String | 屏幕高度（逻辑像素） | "844" |
@@ -225,8 +281,8 @@ NSLog(@"是否越狱：%@", [broken brokenCrackStatus]);
 | systemVersions | String | iOS 版本号 | "17.0" |
 | versionCode | String | 应用版本号 | "1.0.0" |
 | network | String | 网络类型数字编码（0-5） | "1" |
-| wifiName | String | WIFI 名称 | "MyWiFi" |
-| wifiBssid | String | WIFI BSSID | "aa:bb:cc:dd:ee:ff" |
+| wifiName | String | WIFI 名称（仅异步方法返回） | "MyWiFi" |
+| wifiBssid | String | WIFI BSSID（仅异步方法返回） | "aa:bb:cc:dd:ee:ff" |
 | isvpn | String | 是否使用 VPN | "true" / "false" |
 | lastBootTime | String | 上次启动时间戳（毫秒） | "1698000000000" |
 | proxied | String | 是否使用代理 | "true" / "false" |
@@ -236,6 +292,8 @@ NSLog(@"是否越狱：%@", [broken brokenCrackStatus]);
 | cashTotal | String | 总磁盘空间（GB） | "128.000000" |
 | cashCanUse | String | 可用磁盘空间（GB） | "64.500000" |
 | rooted | String | 是否越狱 | "true" / "false" |
+
+**注意**：同步方法返回 `[String: String]`，异步方法返回 `[String: Any]`。
 
 ## 📶 网络类型编码
 
@@ -288,10 +346,21 @@ iOS 14+ 需要请求用户授权，库会自动处理权限请求流程。首次
 
 以下方法为异步调用，需要通过闭包/回调获取结果：
 
-- `SystemService.getDeviceInfo(uuid:completion:)` - 获取完整设备信息
+- `SystemService.getDeviceInfoAsync(uuid:completion:)` - 获取完整设备信息（包含 WiFi）
+- `SystemService.getDeviceInfoAsyncWithOutUuid(completion:)` - 获取设备信息（包含 WiFi，不含 UUID）
 - `NetworkService.wifiInfo(completion:)` - 获取 WIFI 信息
 
 **注意**：异步方法会在主线程回调结果，可直接更新 UI。
+
+### 同步方法 vs 异步方法
+
+| 特性 | 同步方法 | 异步方法 |
+|------|----------|----------|
+| WiFi 信息 | ❌ 不包含 | ✅ 包含 |
+| 执行时间 | < 10ms | 100-500ms（WiFi 获取耗时） |
+| 主线程影响 | 可能阻塞 | ✅ 不阻塞 |
+| 返回类型 | `[String: String]` | `[String: Any]` |
+| 使用场景 | 追求快速响应、不需要 WiFi 信息 | 需要完整信息、需要 WiFi 信息 |
 
 ### 设备兼容性
 
@@ -352,11 +421,22 @@ iOS 14+ 需要请求用户授权，库会自动处理权限请求流程。首次
 - 定期刷新数据以获取最新状态
 - 关注可用空间而非总空间
 
+### 5. 同步方法和异步方法返回类型不同？
+
+**说明：**
+- 同步方法返回 `[String: String]`，因为 WiFi 信息是同步获取的
+- 异步方法返回 `[String: Any]`，因为包含异步获取的 WiFi 信息
+
+**建议：**
+- 使用时注意类型转换
+- 异步方法回调中可以直接访问所有字段
+
 ## 📝 更新日志
 
 ### 0.1.5
 - ✨ 将 WIFI 信息获取改为异步方式
-- 🔄 更新 `SystemService.getDeviceInfo` 为异步方法
+- 🔄 新增 `getDeviceInfoAsync` 和 `getDeviceInfoAsyncWithOutUuid` 异步方法
+- 🔄 新增 `getDeviceInfoDataSyncWithOutWifi` 同步方法
 - 🚀 优化 iOS 14+ WIFI 信息获取方式
 - 📚 完善文档和示例代码
 
